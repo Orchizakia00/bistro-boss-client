@@ -4,9 +4,12 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic();
 
     const {
         register,
@@ -25,16 +28,27 @@ const SignUp = () => {
                 const loggedUser = result.user;
                 console.log(loggedUser);
                 updateUserProfile(data.name, data.photoURL)
-                .then(() => {
-                    console.log('user profile updated successfully');
-                    reset();
-                    Swal.fire({
-                        title: "Great",
-                        text: "User created successfully",
-                        icon: "success"
-                      });
-                      navigate('/')
-                })
+                    .then(() => {
+                        console.log('user profile updated successfully');
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added to the database');
+                                    reset();
+                                    Swal.fire({
+                                        title: "Great",
+                                        text: "User created successfully",
+                                        icon: "success"
+                                    });
+                                }
+                            })
+
+                        navigate('/')
+                    })
             })
     }
 
@@ -94,6 +108,7 @@ const SignUp = () => {
                                 <input className="btn btn-primary" type="submit" value="Sign Up" />
                             </div>
                         </form>
+                        <SocialLogin />
                         <p className="text-center my-6"><small>Already have an account? <Link to={'/login'}>Please Login</Link> </small></p>
                     </div>
                 </div>

@@ -11,47 +11,52 @@ import Order from "../pages/Order/Order/Order";
 import Secret from "../pages/Shared/Secret/Secret";
 import SignUp from "../pages/SignUp/SignUp";
 import PrivateRoute from "./PrivateRoute";
-  
-  
-    export  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <MainLayout />,
-      children: [
-        {
-            path: "/",
-            element: <Home />
-        },
-        {
-            path: "/menu",
-            element: <Menu />
-        },
-        {
-          path: '/order/:category',
-          element: <Order></Order>
-        },
-        {
-          path: '/login',
-          element: <Login></Login>
-        },
-        {
-          path: '/signUp',
-          element: <SignUp />
-        },
-        {
-          path: '/secret',
-          element: <PrivateRoute><Secret /></PrivateRoute>
-        }
-      ]
-    },
-    {
-      path: "dashboard",
-      element: <DashBoard />,
-      children: [
-        {
-          path: 'cart',
-          element: <Cart />
-        }
-      ]
-    }
-  ]);
+import AllUsers from "../pages/DashBoard/AllUsers/AllUsers";
+
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />
+      },
+      {
+        path: "/menu",
+        element: <Menu />
+      },
+      {
+        path: '/order/:category',
+        element: <Order></Order>
+      },
+      {
+        path: '/login',
+        element: <Login></Login>
+      },
+      {
+        path: '/signUp',
+        element: <SignUp />
+      },
+      {
+        path: '/secret',
+        element: <PrivateRoute><Secret /></PrivateRoute>
+      }
+    ]
+  },
+  {
+    path: "dashboard",
+    element: <PrivateRoute><DashBoard /></PrivateRoute>,
+    children: [
+      {
+        path: 'cart',
+        element: <Cart />
+      },
+      {
+        path: 'users',
+        element: <AllUsers />
+      }
+    ]
+  }
+]);
